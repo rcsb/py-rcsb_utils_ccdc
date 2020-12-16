@@ -1,0 +1,5 @@
+# File: HISTORY.txt
+#
+13-Dec-2020 - V0.11 Created module and ported code from py27 version
+16-Dec-2020 - V0.12 Added CcdcSearch and CcdcSearchExec and associated tests
+#
