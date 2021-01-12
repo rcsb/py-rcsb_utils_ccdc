@@ -4,7 +4,7 @@ RCSB Python wrapper for CCDC search and geometrical analysis tools.
 
 ## Introduction
 
-Wrappre utilities for performing similarity and substructure searches on the CCDC database and
+Wrapper utilities for performing similarity and substructure searches on the CCDC database and
 performing geometrical analysis of individual structure entries using the CCDC Python API.
 This module has internal dependencies on the CCDC Python API and CCDC/CSD database.
 These dependencies require licenses and separate installation that is described
