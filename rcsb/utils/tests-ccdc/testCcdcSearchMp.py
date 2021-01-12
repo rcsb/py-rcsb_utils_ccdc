@@ -11,6 +11,8 @@
 """
 Test cases for chemical component search (mp) against the CCDC local Python API -
 
+NOTE:  the CCDC api does not work and play well with rcsb.utils.multiproc or the multiprocessing framework
+
 """
 __docformat__ = "restructuredtext en"
 __author__ = "John Westbrook"

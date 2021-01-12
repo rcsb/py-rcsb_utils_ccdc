@@ -44,13 +44,13 @@ class CcdcSearchTests(unittest.TestCase):
         self.__debug = True
         self.__workPath = os.path.join(HERE, "test-output")
         self.__dataPath = os.path.join(HERE, "test-data")
-        self.__cachePath = os.path.join(HERE, "test-output", "CACHE")
+        # Path to a set of test mol2 files ...
         self.__molFilePath = os.path.join(self.__dataPath, "molfiles")
+        # Test output paths
         self.__simResultPath = os.path.join(self.__workPath, "ccdc_sim")
         self.__ssResultPath = os.path.join(self.__workPath, "ccdc_ss_mol")
         self.__smartsResultPath = os.path.join(self.__workPath, "ccdc_ss_smarts")
         #
-        self.__targetListFilePath = os.path.join(HERE, "test-data", "ccid_exercise_list.txt")
         self.__smartsList = [("000", "COC(=O)O")]
         self.__startTime = time.time()
         logger.info("Starting %s (%s) at %s", self.id(), __version__, time.strftime("%Y %m %d %H:%M:%S", time.localtime()))
@@ -78,7 +78,7 @@ class CcdcSearchTests(unittest.TestCase):
     def testSimilaritySearch(self):
         """Test case:  CCDC similarity search"""
         try:
-            pL = glob.glob(os.path.join(self.__molFilePath, "*"))
+            pL = glob.glob(os.path.join(self.__molFilePath, "*.mol2"))
             logger.info("search list length %d", len(pL))
             #
             for queryTargetPath in pL:
@@ -95,7 +95,7 @@ class CcdcSearchTests(unittest.TestCase):
     def testSubStructureSearch(self):
         """Test case:  CCDC substructure search"""
         try:
-            pL = glob.glob(os.path.join(self.__molFilePath, "*"))
+            pL = glob.glob(os.path.join(self.__molFilePath, "*.mol2"))
             logger.info("search list length %d", len(pL))
             #
             for queryTargetPath in pL:
@@ -114,6 +114,7 @@ def suiteSearchTests():
     suiteSelect = unittest.TestSuite()
     suiteSelect.addTest(CcdcSearchTests("testSimilaritySearch"))
     suiteSelect.addTest(CcdcSearchTests("testSubStructureSearch"))
+    suiteSelect.addTest(CcdcSearchTests("testSmartsSearch"))
     return suiteSelect
 
 

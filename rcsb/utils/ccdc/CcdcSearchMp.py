@@ -11,7 +11,8 @@
 """
 MP execution wrapper for substructure and similarity search against the CCDC local Python API -
 
-The latest ccdc API appears not compatible with rcsb.utils.multiproc and Python multiprocessing modules.
+NOTE:  The latest ccdc API appears not compatible with rcsb.utils.multiproc and Python multiprocessing modules.
+
 """
 __docformat__ = "restructuredtext en"
 __author__ = "John Westbrook"

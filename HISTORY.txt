@@ -2,4 +2,5 @@
 #
 13-Dec-2020 - V0.11 Created module and ported code from py27 version
 16-Dec-2020 - V0.12 Added CcdcSearch and CcdcSearchExec and associated tests
+12-Jan-2021 - V0.13 Add geometry analysis module and assocated tests, update documentation
 #

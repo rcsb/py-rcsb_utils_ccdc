@@ -41,15 +41,15 @@ logger.setLevel(logging.INFO)
 
 class CcdcSearchExecTests(unittest.TestCase):
     def setUp(self):
-        self.__verbose = True
-        self.__debug = True
         self.__workPath = os.path.join(HERE, "test-output")
         self.__dataPath = os.path.join(HERE, "test-data")
-        self.__cachePath = os.path.join(HERE, "test-output", "CACHE")
         self.__molFileDirPath = os.path.join(self.__dataPath, "molfiles")
         self.__simResultPath = os.path.join(self.__workPath, "test_chem_comp_ccdc_sim_cli")
         self.__ssResultPath = os.path.join(self.__workPath, "test_chem_comp_ccdc_ss_cli")
         self.__logPath = os.path.join(self.__workPath, "execStdout.log")
+        # path to the CSD and python interpreter where the CCDC api is installed.
+        self.__pythonPath = os.environ["CSD_PYTHON_PATH"]
+        self.__csdHome = os.environ["CSDHOME"]
         #
         self.__queryListFilePath = os.path.join(self.__workPath, "query_list.txt")
 
@@ -73,10 +73,11 @@ class CcdcSearchExecTests(unittest.TestCase):
             exU = ExecUtils()
             logger.info("Executing shell for %s", self.__queryListFilePath)
             cmdPath = os.path.join(TOPDIR, "rcsb", "utils", "ccdc", "CcdcSearchExec.py")
+
             logger.info("cmdPath %r", cmdPath)
             ok = exU.runShell(
-                "python %s --mol_list_path %s --result_path %s --search_type %s --csdhome %s"
-                % (cmdPath, self.__queryListFilePath, self.__ssResultPath, "substructure", os.environ["CSDHOME"]),
+                "%s %s --mol_list_path %s --result_path %s --search_type %s --csdhome %s"
+                % (self.__pythonPath, cmdPath, self.__queryListFilePath, self.__ssResultPath, "substructure", self.__csdHome),
                 outPath=self.__logPath,
                 outAppend=False,
                 timeOut=60,

@@ -5,9 +5,10 @@
 # Version: 0.001
 #
 # Updates:
-#    22-June-2016 jdw add CcdcMatchIndex/Inst() classes -
-#    28-July-2017 jdw add PdbxChemCompIndex and PdbxChemCompIndexInst classes -
-#    28-July-2017 jdw change variant_id to target_id in the ccdc results index
+#    22-Jun-2016 jdw add CcdcMatchIndex/Inst() classes -
+#    28-Jul-2017 jdw add PdbxChemCompIndex and PdbxChemCompIndexInst classes -
+#    28-Jul-2017 jdw change variant_id to target_id in the ccdc results index
+#    12-Jan-2021 jdw Py39 cleanup
 ##
 """
 Accessor methods for index of chemical component variants

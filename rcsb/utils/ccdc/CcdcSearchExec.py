@@ -35,12 +35,14 @@ def main():
     parser.add_argument("--start_record", default=None, help="Starting record")
     parser.add_argument("--end_record", default=None, help="End record")
     parser.add_argument("--csdhome", default=None, help="Path to the CSD release (path to CSD_202x)")
-    parser.add_argument("--py37_lib_path", default=None, help="Path to Py37 library")
+    parser.add_argument("--python_lib_path", default=None, help="Path to Python library")
+    parser.add_argument("--python_version", default=None, help="Python library version (default: 3.7)")
     #
     args = parser.parse_args()
     #
     try:
-        py37Lib = args.py37_lib_path if args.py37_lib_path else os.path.join(os.environ["PYENV_ROOT"], "versions", "3.7.9", "lib")
+        pyLib = args.python_lib_path if args.python_lib_path else os.path.join(os.environ["PYENV_ROOT"], "versions", "3.7.9", "lib")
+        pyVer = args.python_version if args.python_version else "3.7"
 
         csdHome = args.csdhome
         molFilePath = args.mol_list_path
@@ -55,9 +57,13 @@ def main():
     #
     try:
         os.environ["CSDHOME"] = csdHome
-        os.environ["LD_LIBRARY_PATH"] = "%s:%s/python3.7/site-packages/ccdc/_lib:$LD_LIBRARY_PATH" % (py37Lib, py37Lib)
-        os.environ["DYLD_LIBRARY_PATH"] = "%s/python3.7/site-packages/ccdc/_lib" % py37Lib
-        os.environ["DYLD_FRAMEWORK_PATH"] = "%s/python3.7/site-packages/ccdc/_lib" % py37Lib
+        os.environ["LD_LIBRARY_PATH"] = "%s:%s/python%s/site-packages/ccdc/_lib:$LD_LIBRARY_PATH" % (pyLib, pyLib, pyVer)
+        os.environ["DYLD_LIBRARY_PATH"] = "%s/python%s/site-packages/ccdc/_lib" % (pyLib, pyVer)
+        os.environ["DYLD_FRAMEWORK_PATH"] = "%s/python%s/site-packages/ccdc/_lib" % (pyLib, pyVer)
+
+        logger.debug("Using CSDHOME %s", os.environ["CSDHOME"])
+        logger.debug("Using DYLD_LIBRARY_PATH %s", os.environ["DYLD_LIBRARY_PATH"])
+        logger.debug("Using DYLD_FRAMEWORK_PATH %s", os.environ["DYLD_FRAMEWORK_PATH"])
 
         ccdcS = CcdcSearch(verbose=True)
         pL = ccdcS.getList(molFilePath, startRecord=startRecord, endRecord=endRecord)
