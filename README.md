@@ -50,7 +50,9 @@ pip install -e .
 ```
 
 A CLI is provided to simplify access to the wrapper functions accross Python versions
-not directly supported by the CCDC Python API.
+not directly supported by the CCDC Python API.  A further multiprocessing wrapper is provided
+around this CLI as the direct implementation of the python multiprocessing module atop the
+CSD API was not viable.
 
 ```bash
 # edit and set the enviroment in the following bash script ...

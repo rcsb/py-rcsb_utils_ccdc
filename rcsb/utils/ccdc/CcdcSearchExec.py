@@ -5,6 +5,7 @@
 #  Execution wrapper  --  for CCDC search operations (wraps up the py37 environment)
 #
 #  Updates:
+#   15-Jan-2021 jdw add option to export search hit list.
 #
 ##
 __docformat__ = "restructuredtext en"
@@ -18,6 +19,7 @@ import os
 import sys
 
 from rcsb.utils.ccdc.CcdcSearch import CcdcSearch
+from rcsb.utils.io.MarshalUtil import MarshalUtil
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 TOPDIR = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
@@ -37,6 +39,7 @@ def main():
     parser.add_argument("--csdhome", default=None, help="Path to the CSD release (path to CSD_202x)")
     parser.add_argument("--python_lib_path", default=None, help="Path to Python library")
     parser.add_argument("--python_version", default=None, help="Python library version (default: 3.7)")
+    parser.add_argument("--hit_list_path", default=None, help="Path to list of molecule identifers with search results")
     #
     args = parser.parse_args()
     #
@@ -50,6 +53,7 @@ def main():
         searchType = args.search_type
         startRecord = args.start_record
         endRecord = args.end_record
+        hitListPath = args.hit_list_path
     except Exception as e:
         logger.exception("Argument processing problem %s", str(e))
         parser.print_help(sys.stderr)
@@ -69,13 +73,20 @@ def main():
         pL = ccdcS.getList(molFilePath, startRecord=startRecord, endRecord=endRecord)
         logger.info("Search file %s record length %r", molFilePath, len(pL) if pL else [])
         #
+        hitL = []
         for ii, queryTargetPath in enumerate(pL, 1):
             _, fn = os.path.split(queryTargetPath)
             queryTargetId, _ = os.path.splitext(fn)
             #
             logger.info("(%d/%d) Start search for %r %r", ii, len(pL), queryTargetId, queryTargetPath)
-            ccdcS.search(queryTargetId, queryTargetPath, resultPath, searchType=searchType)
-        logger.info("%d searches completed - done - ", len(pL))
+            numHits = ccdcS.search(queryTargetId, queryTargetPath, resultPath, searchType=searchType)
+            if numHits:
+                hitL.append(queryTargetId)
+        logger.info("%d searches completed - matched %d", len(pL), len(hitL))
+        if hitListPath:
+            mU = MarshalUtil()
+            ok = mU.doExport(hitListPath, hitL, fmt="list")
+            logger.info("Wrote hit list (%r) to %s", ok, hitListPath)
     except Exception as e:
         logger.exception("Failing with %s", str(e))
 

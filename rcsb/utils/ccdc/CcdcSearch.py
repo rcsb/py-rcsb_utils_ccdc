@@ -84,7 +84,7 @@ class CcdcSearch(object):
         summaryList = []
         targetStructures = EntryReader(queryTargetPath)
         dirPath = os.path.join(resultPath, queryTargetId)
-
+        numHits = 0
         for ii, e in enumerate(targetStructures, 1):
             numHits = 0
             startTime = time.time()
@@ -154,7 +154,7 @@ class CcdcSearch(object):
                         summaryList.append(copy.deepcopy(hI.get()))
                         #
             else:
-                logger.info("(%d) se sarch for %s returns no matches", ii, targetMol.identifier)
+                logger.info("(%d) search for %s returns no matches", ii, targetMol.identifier)
                 hits = None
         #
         if numHits > 0:

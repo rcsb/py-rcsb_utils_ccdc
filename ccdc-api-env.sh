@@ -8,7 +8,7 @@
 #
 export CSDHOME=/Applications/CCDC/CSD_2021
 PYROOT=$PYENV_ROOT/versions/3.7.9
-export CSD_PYTHON_PATH=$PYROOT/bin/python
+export CSD_PYTHON_ROOT_PATH=$PYROOT
 #
 # For Linux
 export LD_LIBRARY_PATH=$PYROOT/lib:$PYROOT/lib/python3.7/site-packages/ccdc/_lib:$LD_LIBRARY_PATH

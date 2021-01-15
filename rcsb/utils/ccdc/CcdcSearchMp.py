@@ -1,6 +1,6 @@
 ##
 #
-# File:    CcdcSearhMp.py
+# File:    CcdcSearchMp.py
 # Author:  J. Westbrook
 # Date:    15-Dec-2020
 # Version: 0.001
@@ -11,7 +11,8 @@
 """
 MP execution wrapper for substructure and similarity search against the CCDC local Python API -
 
-NOTE:  The latest ccdc API appears not compatible with rcsb.utils.multiproc and Python multiprocessing modules.
+NOTE:  The latest ccdc API appears not compatible with rcsb.utils.multiproc and Python multiprocessing modules
+       so this code is not currently used.
 
 """
 __docformat__ = "restructuredtext en"
