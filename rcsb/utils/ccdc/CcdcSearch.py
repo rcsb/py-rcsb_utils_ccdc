@@ -28,10 +28,10 @@ import logging
 import time
 import os
 
-from ccdc.io import EntryReader, MoleculeWriter
+from ccdc.io import EntryReader, MoleculeWriter, csd_version, csd_directory
 from ccdc.search import SimilaritySearch, TextNumericSearch, MoleculeSubstructure, SubstructureSearch, SMARTSSubstructure
 
-from rcsb.utils.ccdc.IndexUtils import CcdcMatchIndex, CcdcMatchIndexInst
+from rcsb.utils.io.IndexUtils import CcdcMatchIndex, CcdcMatchIndexInst
 from rcsb.utils.io.MarshalUtil import MarshalUtil
 
 logger = logging.getLogger(__name__)
@@ -66,7 +66,7 @@ class CcdcSearch(object):
 
         Args:
             queryTargetId (str): query identifier
-            queryTargetPath (srt): path to the query molfile (mol, sdf, mol2)
+            queryTargetPath (str): path to the query molfile (mol, sdf, mol2)
             resultPath (str): output path to match results
             normalizeFlag (bool, optional): do standard perceptions on matching molecules. Defaults to True.
             maxHits (int, optional): maximum number of matches to return. Defaults to 50.
@@ -80,8 +80,12 @@ class CcdcSearch(object):
         mU = MarshalUtil()
         logger.info("Start search for target %s path %s result path %s", queryTargetId, queryTargetPath, resultPath)
         #
-        searchType = "similarity"
         summaryList = []
+        #
+        targetDirPath = os.path.dirname(queryTargetPath)
+        cifTargetPath = os.path.join(targetDirPath, queryTargetId + ".cif")
+
+        #
         targetStructures = EntryReader(queryTargetPath)
         dirPath = os.path.join(resultPath, queryTargetId)
         numHits = 0
@@ -111,7 +115,12 @@ class CcdcSearch(object):
                 for targetHit in hits[:maxHits]:
                     #
                     hI = CcdcMatchIndexInst()
+                    hI.setCsdVersion(csd_version())
+                    hI.setCsdDirectory(csd_directory())
                     hI.setTargetId(queryTargetId)
+                    hI.setTargetPath(queryTargetPath)
+                    if mU.exists(cifTargetPath):
+                        hI.setTargetCcPath(cifTargetPath)
                     hI.setIdentifier(targetHit.identifier)
                     hI.setMatchType(searchType)
                     try:
@@ -132,27 +141,31 @@ class CcdcSearch(object):
                     #
                     mU.mkdir(dirPath)
                     mol2L = []
-                    for jj, mc in enumerate(targetHit.molecule.components, 1):
-                        fp = os.path.join(dirPath, queryTargetId + "_" + targetHit.identifier + "_%03d" % jj + ".mol2")
-                        mol2L.append(fp)
-                        with MoleculeWriter(fp) as ofh:
-                            ofh.write(mc)
+                    if searchType == "substructure":
+                        for jj, mc in enumerate(targetHit.match_components(), 1):
+                            fp = os.path.join(dirPath, queryTargetId + "_" + targetHit.identifier + "_%03d" % jj + ".mol2")
+                            mol2L.append(fp)
+                            with MoleculeWriter(fp) as ofh:
+                                ofh.write(mc)
 
+                            #
+                            fp = os.path.join(dirPath, queryTargetId + "_" + targetHit.identifier + "_%03d" % jj + ".sdf")
+                            with MoleculeWriter(fp) as ofh:
+                                ofh.write(mc)
                         #
-                        fp = os.path.join(dirPath, queryTargetId + "_" + targetHit.identifier + "_%03d" % jj + ".sdf")
-                        with MoleculeWriter(fp) as ofh:
-                            ofh.write(mc)
-                    #
-                    #  Check for multiple generated result files -
-                    #
-                    for jj, fp in enumerate(mol2L, 1):
-                        logger.debug("(%d) adding component fp %s", jj, fp)
-                        hI.setMatchNumber(jj)
-                        hI.setMol2Path(fp)
-                        tt = fp[:-4] + "sdf"
-                        hI.setMolPath(tt)
+                        #  Check for multiple generated result files -
+                        #
+                        for jj, fp in enumerate(mol2L, 1):
+                            logger.debug("(%d) adding component fp %s", jj, fp)
+                            hI.setMatchNumber(jj)
+                            hI.setMol2Path(fp)
+                            tt = fp[:-4] + "sdf"
+                            hI.setMolPath(tt)
+                            summaryList.append(copy.deepcopy(hI.get()))
+                            #
+                    else:
+                        hI.setMatchNumber(1)
                         summaryList.append(copy.deepcopy(hI.get()))
-                        #
             else:
                 logger.info("(%d) search for %s returns no matches", ii, targetMol.identifier)
                 hits = None

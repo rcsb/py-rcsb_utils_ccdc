@@ -18,7 +18,6 @@ import logging
 import os
 import sys
 
-from rcsb.utils.ccdc.CcdcSearch import CcdcSearch
 from rcsb.utils.io.MarshalUtil import MarshalUtil
 
 HERE = os.path.abspath(os.path.dirname(__file__))
@@ -65,9 +64,11 @@ def main():
         os.environ["DYLD_LIBRARY_PATH"] = "%s/python%s/site-packages/ccdc/_lib" % (pyLib, pyVer)
         os.environ["DYLD_FRAMEWORK_PATH"] = "%s/python%s/site-packages/ccdc/_lib" % (pyLib, pyVer)
 
-        logger.debug("Using CSDHOME %s", os.environ["CSDHOME"])
-        logger.debug("Using DYLD_LIBRARY_PATH %s", os.environ["DYLD_LIBRARY_PATH"])
-        logger.debug("Using DYLD_FRAMEWORK_PATH %s", os.environ["DYLD_FRAMEWORK_PATH"])
+        logger.info("Using CSDHOME %s", os.environ["CSDHOME"])
+        logger.info("Using DYLD_LIBRARY_PATH %s", os.environ["DYLD_LIBRARY_PATH"])
+        logger.info("Using DYLD_FRAMEWORK_PATH %s", os.environ["DYLD_FRAMEWORK_PATH"])
+
+        from rcsb.utils.ccdc.CcdcSearch import CcdcSearch  # pylint: disable=import-outside-toplevel
 
         ccdcS = CcdcSearch(verbose=True)
         pL = ccdcS.getList(molFilePath, startRecord=startRecord, endRecord=endRecord)

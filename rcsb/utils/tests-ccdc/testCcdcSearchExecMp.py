@@ -2,7 +2,7 @@
 #
 # File:    testCcdcSearchMp.py
 # Author:  J. Westbrook
-# Date:    15-Dec-2020
+# Date:    15-Jan-2021
 # Version: 0.001
 #
 # Updated:
@@ -10,9 +10,6 @@
 ##
 """
 Test cases for chemical component search (mp) against the CCDC local Python API -
-
-NOTE:  the CCDC api does not work and play well with rcsb.utils.multiproc or the multiprocessing framework
-
 """
 __docformat__ = "restructuredtext en"
 __author__ = "John Westbrook"
@@ -64,7 +61,7 @@ class CcdcSearchMpTests(unittest.TestCase):
         logger.info("Completed %s at %s (%.4f seconds)", self.id(), time.strftime("%Y %m %d %H:%M:%S", time.localtime()), endTime - self.__startTime)
 
     def testSubStructureSearchExecMp(self):
-        """Test case:  CCDC similarity search"""
+        """Test case:  CCDC substructure search"""
         try:
             pL = glob.glob(os.path.join(self.__molFilePath, "*.mol2"), recursive=True)
             logger.info("search list length %d", len(pL))

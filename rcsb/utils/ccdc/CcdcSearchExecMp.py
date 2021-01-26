@@ -2,7 +2,7 @@
 #
 # File:    CcdcSearchExecMp.py
 # Author:  J. Westbrook
-# Date:    15-Dec-2020
+# Date:    15-Jan-2021
 # Version: 0.001
 #
 # Updated:
@@ -105,7 +105,7 @@ class CcdcSearchExecWorker(object):
 
 class CcdcSearchExecMp(object):
     def __init__(self, pythonRootPath, csdHome, verbose=True):
-        """MP execution wrapper for variant search against the CCDC local Python API -"""
+        """MP execution wrapper for search against the CCDC local Python API -"""
         self.__verbose = verbose
         self.__pythonRootPath = pythonRootPath
         self.__csdHome = csdHome
