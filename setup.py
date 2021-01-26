@@ -47,7 +47,7 @@ setup(
     dependency_links=[],
     install_requires=[
         "mmcif >= 0.61",
-        "rcsb.utils.io >= 0.95",
+        "rcsb.utils.io >= 0.97",
         "rcsb.utils.multiproc >= 0.18",
     ],
     packages=find_packages(exclude=["rcsb.mock-data", "rcsb.utils.tests-ccdc", "tests.*"]),
