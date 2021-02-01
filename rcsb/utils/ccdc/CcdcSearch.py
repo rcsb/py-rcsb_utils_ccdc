@@ -128,6 +128,7 @@ class CcdcSearch(object):
                         hI.setChemicalName(targetHit.entry.chemical_name)
                         hI.setTemperature(targetHit.entry.temperature)
                         hI.setRadiationSource(targetHit.entry.radiation_source)
+                        hI.setHasDisorder("N")
                         cit = targetHit.entry.publication
                         if cit.doi is not None:
                             hI.setCitationDOI(cit.doi)
@@ -226,6 +227,7 @@ class CcdcSearch(object):
                     hI.setChemicalName(targetHit.entry.chemical_name)
                     hI.setTemperature(targetHit.entry.temperature)
                     hI.setRadiationSource(targetHit.entry.radiation_source)
+                    hI.setHasDisorder("N")
                     cit = targetHit.entry.publication
                     if cit.doi is not None:
                         hI.setCitationDOI(cit.doi)

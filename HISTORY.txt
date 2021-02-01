@@ -5,5 +5,5 @@
 12-Jan-2021 - V0.13 Add geometry analysis module and assocated tests, update documentation
 15-Jan-2021 - V0.14 Add multiprocessing wrapper for the CcdcSearchExec()
 26-Jan-2021 - V0.15 Move IndexUtils() to rcsb.utils.io, extend index metadata
-#
+31-Jan-2021 - V0.16 Update add hasDisorder() status.
 #

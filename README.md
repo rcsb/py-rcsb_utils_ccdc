@@ -13,13 +13,39 @@ with the CCDC documentation.  The 2021 version of the CCDC API is supported in P
 ### Installation
 
 Download the library source software from the project repository and set the
-enviroment corresponding to the CCDC installation in the the script `ccdc-api-env.sh`:
+enviroment corresponding to the CCDC installation in the example script `ccdc-api-env.sh`.
+This script provides an example for a typical `pyenv` virtual configuration.
+
+To install using pip:
+
+```bash
+pip install rcsb.utils.ccdc
+```
+
+Set the following environmental variables as required for you CCDC database
+and Python API installation.
+
+```bash
+export CSDHOME=/Applications/CCDC/CSD_2021
+# Locate your Python installation in which CCDC Python API is installed.
+PYROOT=$PYENV_ROOT/versions/3.7.9
+export CSD_PYTHON_ROOT_PATH=$PYROOT
+#
+# For Linux
+export LD_LIBRARY_PATH=$PYROOT/lib:$PYROOT/lib/python3.7/site-packages/ccdc/_lib:$LD_LIBRARY_PATH
+# For Macos
+export DYLD_LIBRARY_PATH=$PYROOT/lib/python3.7/site-packages/ccdc/_lib
+export DYLD_FRAMEWORK_PATH=$PYROOT/lib/python3.7/site-packages/ccdc/_lib
+```
+
+To install from the source repository:
 
 ```bash
 
 git clone --recurse-submodules https://github.com/rcsb/py-rcsb_utils_ccdc.git
 
 cd py-rcsb_utils_ccdc
+pip install -r requirements
 # edit and set the enviroment in the following bash script ...
 . ccdc-api-env.sh
 
@@ -51,8 +77,7 @@ pip install -e .
 
 A CLI is provided to simplify access to the wrapper functions accross Python versions
 not directly supported by the CCDC Python API.  A further multiprocessing wrapper is provided
-around this CLI as the direct implementation of the python multiprocessing module atop the
-CSD API was not viable.
+which uses this CLI.  This intermediate approach was taken as the direct implementation of the python multiprocessing module atop the CSD API was not viable.
 
 ```bash
 # edit and set the enviroment in the following bash script ...
