@@ -148,11 +148,25 @@ class CcdcSearch(object):
                             mol2L.append(fp)
                             with MoleculeWriter(fp) as ofh:
                                 ofh.write(mc)
-
+                            # Replace the title line
+                            with open(fp) as fin:
+                                lines = fin.readlines()
+                            lines[1] = lines[1].replace("00", targetHit.identifier)
+                            #
+                            with open(fp, "w") as fout:
+                                fout.write("".join(lines))
                             #
                             fp = os.path.join(dirPath, queryTargetId + "_" + targetHit.identifier + "_%03d" % jj + ".sdf")
                             with MoleculeWriter(fp) as ofh:
                                 ofh.write(mc)
+
+                            # Replace the title line
+                            with open(fp) as fin:
+                                lines = fin.readlines()
+                            lines[0] = lines[0].replace("00", targetHit.identifier)
+                            #
+                            with open(fp, "w") as fout:
+                                fout.write("".join(lines))
                         #
                         #  Check for multiple generated result files -
                         #
@@ -246,11 +260,24 @@ class CcdcSearch(object):
                     mol2L.append(fp)
                     with MoleculeWriter(fp) as ofh:
                         ofh.write(mc)
-
+                    # Replace the title line
+                    with open(fp) as fin:
+                        lines = fin.readlines()
+                    lines[1] = lines[1].replace("00", targetHit.identifier)
+                    #
+                    with open(fp, "w") as fout:
+                        fout.write("".join(lines))
                     #
                     fp = os.path.join(dirPath, queryTargetId + "_" + targetHit.identifier + "_%03d" % jj + ".sdf")
                     with MoleculeWriter(fp) as ofh:
                         ofh.write(mc)
+                    # Replace the title line
+                    with open(fp) as fin:
+                        lines = fin.readlines()
+                    lines[0] = lines[0].replace("00", targetHit.identifier)
+                    #
+                    with open(fp, "w") as fout:
+                        fout.write("".join(lines))
                 #
                 #  Check for multiple generated result files -
                 #
