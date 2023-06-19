@@ -43,7 +43,7 @@ def main():
     args = parser.parse_args()
     #
     try:
-        pyLib = args.python_lib_path if args.python_lib_path else os.path.join(os.environ["PYENV_ROOT"], "versions", "3.7.9", "lib")
+        pyLib = args.python_lib_path if args.python_lib_path else os.path.join(os.environ["PYROOT"], "lib")
         pyVer = args.python_version if args.python_version else "3.7"
 
         csdHome = args.csdhome
